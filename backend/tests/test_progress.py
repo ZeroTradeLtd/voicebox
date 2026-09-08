@@ -43,7 +43,6 @@ def test_progress_manager_basic():
     assert progress["progress"] == 100.0
 
     print("✓ Test 1 PASSED\n")
-    return True
 
 
 async def test_progress_manager_sse():
@@ -103,7 +102,6 @@ async def test_progress_manager_sse():
     assert collected_events[-1]["status"] == "complete", "Last event should be 'complete'"
 
     print("✓ Test 2 PASSED\n")
-    return True
 
 
 def test_hf_progress_tracker():
@@ -230,14 +228,13 @@ async def test_full_integration():
 
     # Verify
     print(f"\n  Collected {len(collected_events)} events")
-    if len(collected_events) > 0:
-        print(f"  First event: {collected_events[0]}")
-        print(f"  Last event: {collected_events[-1]}")
-        assert collected_events[-1]["status"] == "complete", "Should end with 'complete'"
-        print("✓ Test 4 PASSED\n")
-        return True
-    print("✗ Test 4 FAILED - No events received\n")
-    return False
+    # Asserted, not branched on: the old "no events" path printed FAILED and
+    # returned False, which pytest reports as a pass.
+    assert collected_events, "Should have received at least one event"
+    print(f"  First event: {collected_events[0]}")
+    print(f"  Last event: {collected_events[-1]}")
+    assert collected_events[-1]["status"] == "complete", "Should end with 'complete'"
+    print("✓ Test 4 PASSED\n")
 
 
 async def main():
