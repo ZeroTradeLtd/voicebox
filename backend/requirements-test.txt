@@ -12,6 +12,10 @@
 #     python -m pytest backend/tests/test_voice_agent.py backend/tests/test_voice_agent_v2.py
 
 # Application deps reachable from the tests
+# tqdm: HFProgressTracker works by subclassing it to intercept download
+# progress, so the progress suites need the real thing. Pure python and
+# tiny -- it does not drag in any of the ML stack.
+tqdm>=4.66.0
 fastapi>=0.109.0
 pydantic>=2.5.0
 sqlalchemy>=2.0.0
